@@ -1,4 +1,6 @@
-﻿namespace ManagementSystem.Core.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace ManagementSystem.Core.Entities;
 
 public class Employee
 {
@@ -10,13 +12,16 @@ public class Employee
     public string Cpf { get; set; } = string.Empty;
     public decimal Salary { get; set; }
 
-    public DateTime HiredAt { get; set; } = DateTime.Now;
-    public DateTime UpdatetedAt { get; set; } = DateTime.Now;
-    public DateTime ActivatedAt { get; set; } = DateTime.Now;
-    public DateTime ResignedAt { get; set; } = DateTime.Now;
+    public DateTime HiredAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public DateTime ActivatedAt { get; set; }
+    public DateTime? ResignedAt { get; set; }
 
-    public int DepartmentId { get; set; }
+    [JsonIgnore]
     public Department Department { get; set; } = null!;
-    public int PositionId { get; set; }
+    public int DepartmentId { get; set; }
+
+    [JsonIgnore]
     public Position Position { get; set; } = null!;
+    public int PositionId { get; set; }
 }

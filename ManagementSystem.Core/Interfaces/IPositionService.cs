@@ -8,8 +8,8 @@ namespace ManagementSystem.Core.Interfaces;
 public interface IPositionService
 {
     Task<Response<Position?>> CreatePositionAsync(CreatePositionDto createPosition);
-    Task<Response<Position?>> UpdatePositionAsync(int id, UpdatePositionDto updatePosition);
-    Task<Response<Position?>> GetPositionByIdAsync(int id);
+    Task<Response<Position?>> UpdatePositionAsync(int positionId, UpdatePositionDto updatePosition);
+    Task<Response<Position?>> GetPositionByIdAsync(int positionId);
     Task<PagedResponse<IEnumerable<Position?>>> GetAllPositionsAsync(PagedRequest pagedRequest);
-    Task<Response<Position?>> DeletePositionAsync(int id);
+    Task<Response<Position?>> DeletePositionAsync(int positionId);
 }

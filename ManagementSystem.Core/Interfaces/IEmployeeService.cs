@@ -8,10 +8,10 @@ namespace ManagementSystem.Core.Interfaces;
 public interface IEmployeeService
 {
     Task<Response<Employee?>> HireEmployeeAsync(HireEmployeeDto employeeDto);
-    Task<Response<Employee?>> UpdateEmployeeAsync(int id, UpdateEmployeeDto employeeDto);
-    Task<Response<Employee?>> ActiveEmployeeAsync(int id, ActiveEmployeeDto employeeDto);
-    Task<Response<Employee?>> GetEmployeeByIdAsync(int id);
+    Task<Response<Employee?>> UpdateEmployeeAsync(int employeeId, UpdateEmployeeDto employeeDto);
+    Task<Response<Employee?>> ActiveEmployeeAsync(int employeeId, ActiveEmployeeDto employeeDto);
+    Task<Response<Employee?>> GetEmployeeByIdAsync(int employeeId);
     Task<PagedResponse<IEnumerable<Employee?>>> GetAllEmployeesAsync(PagedRequest pagedRequest);
-    Task<Response<Employee?>> ResignEmployeeAsync(int id);
-    Task<Response<Employee?>> DeleteEmployeeAsync(int id);
+    Task<Response<Employee?>> ResignEmployeeAsync(int employeeId);
+    Task<Response<Employee?>> DeleteEmployeeAsync(int employeeId);
 }
