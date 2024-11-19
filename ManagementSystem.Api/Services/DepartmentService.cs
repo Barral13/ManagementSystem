@@ -22,6 +22,7 @@ public class DepartmentService(ApplicationDbContext context) : IDepartmentServic
         }
     }
 
+
     public async Task<Response<Department?>> UpdateDepartmentAsync(int id, UpdateDepartmentDto departmentDto)
     {
         try

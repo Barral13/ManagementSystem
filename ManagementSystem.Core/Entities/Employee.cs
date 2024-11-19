@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using ManagementSystem.Core.Enums;
+using System.Text.Json.Serialization;
 
 namespace ManagementSystem.Core.Entities;
 
@@ -11,6 +12,7 @@ public class Employee
     public string PhoneNumber { get; set; } = string.Empty;
     public string Cpf { get; set; } = string.Empty;
     public decimal Salary { get; set; }
+    public EStatus Status { get; set; }
 
     public DateTime HiredAt { get; set; }
     public DateTime UpdatedAt { get; set; }

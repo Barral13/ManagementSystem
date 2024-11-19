@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ManagementSystem.Core.Entities;
+using ManagementSystem.Core.Enums;
 
 namespace ManagementSystem.Core.DTOs.EmployeeDto;
 
@@ -14,6 +15,5 @@ public class ActiveEmployeeDto
     [Range(0, double.MaxValue, ErrorMessage = "O salário deve ser um valor positivo.")]
     public decimal Salary { get; set; }
 
-    [DataType(DataType.Date)]
-    public DateTime ActivatedAt { get; set; } = DateTime.Now;
+    public EStatus Status { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ManagementSystem.Core.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ManagementSystem.Core.DTOs.EmployeeDto;
 
@@ -16,13 +17,11 @@ public class UpdateEmployeeDto
     [Phone(ErrorMessage = "O número de telefone deve ser válido.")]
     public string? PhoneNumber { get; set; }
 
-    [Range(0.01, double.MaxValue, ErrorMessage = "O salário deve ser um valor positivo com até duas casas decimais.")]
-    [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
+    [Range(0.01, double.MaxValue, ErrorMessage = "O salário deve ser um valor positivo.")]
     public decimal? Salary { get; set; }
+
+    public EStatus Status { get; set; }
 
     public int? DepartmentId { get; set; }
     public int? PositionId { get; set; }
-
-    [DataType(DataType.Date)]
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
 }
