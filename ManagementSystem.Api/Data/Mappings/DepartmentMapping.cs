@@ -1,5 +1,13 @@
-﻿namespace ManagementSystem.Api.Data.Mappings;
+﻿using ManagementSystem.Core.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public class DepartmentMapping
+namespace ManagementSystem.Api.Data.Mappings;
+
+public class DepartmentMapping : IEntityTypeConfiguration<Department>
 {
+    public void Configure(EntityTypeBuilder<Department> builder)
+    {
+        builder.ToTable("Department");
+    }
 }
