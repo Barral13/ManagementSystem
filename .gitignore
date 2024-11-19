@@ -1,0 +1,73 @@
+# ASP.NET
+.vs/
+.vscode/
+.idea/
+
+# User-specific files
+*.[Cc]ache
+*.[Cc]ache/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer
+*.cab
+*.msi
+*.msm
+*.msp
+
+# ASP.NET temporary files
+bin/
+obj/
+out/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Windows Installer
+*.cab
+*.msi
+*.msm
+*.msp
+
+# VS for Mac
+.vscode/
+
+# JetBrains Rider
+.idea/
+
+# Node.js
+node_modules/
+
+# NPM packages
+npm-debug.log
+yarn-error.log
+
+# VS Code settings folder
+.vscode/
+
+# Azure Web App publish folder
+wwwroot/
+
+# User-secrets
+secrets.json
+
+# Dependency folders
+packages/
