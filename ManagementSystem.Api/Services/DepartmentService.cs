@@ -33,12 +33,10 @@ public class DepartmentService(ApplicationDbContext context) : IDepartmentServic
         catch (Exception ex)
         {
             return new Response<Department?>(null,
-                        code: 500,
-                        message: $"Erro interno do servidor ao tentar criar o departamento. Detalhes do erro: {ex.Message}. " +
-                                 "Por favor, entre em contato com o suporte.");
+                    code: 500,
+                    message: $"Erro interno do servidor. Detalhes do erro: {ex.Message}.");
         }
     }
-
 
     public async Task<Response<Department?>> UpdateDepartmentAsync(int id, UpdateDepartmentDto departmentDto)
     {
@@ -62,9 +60,8 @@ public class DepartmentService(ApplicationDbContext context) : IDepartmentServic
         catch (Exception ex)
         {
             return new Response<Department?>(null,
-                        code: 500,
-                        message: $"Erro interno do servidor ao tentar atualizar o departamento. Detalhes do erro: {ex.Message}. " +
-                                 "Por favor, entre em contato com o suporte.");
+                    code: 500,
+                    message: $"Erro interno do servidor. Detalhes do erro: {ex.Message}.");
         }
     }
 
@@ -85,9 +82,8 @@ public class DepartmentService(ApplicationDbContext context) : IDepartmentServic
         catch (Exception ex)
         {
             return new Response<Department?>(null,
-                        code: 500,
-                        message: $"Erro interno do servidor ao buscar departamento.         Detalhes do erro: {ex.Message}. " +
-                                 "Por favor, entre em contato com o suporte.");
+                    code: 500,
+                    message: $"Erro interno do servidor. Detalhes do erro: {ex.Message}.");
         }
     }
 
@@ -95,12 +91,26 @@ public class DepartmentService(ApplicationDbContext context) : IDepartmentServic
     {
         try
         {
-            throw new NotImplementedException();
-        }
-        catch (Exception)
-        {
+            var query = context.Departments.AsNoTracking().OrderBy(x => x.Name);
 
-            throw;
+            var departments = await query
+                .Skip((pagedRequest.PageNumber - 1) * pagedRequest.PageSize)
+                .Take(pagedRequest.PageSize)
+                .ToListAsync();
+
+            var totalCount = await query.CountAsync();
+
+            return new PagedResponse<IEnumerable<Department?>>(
+                departments,
+                totalCount,
+                pagedRequest.PageNumber,
+                pagedRequest.PageSize);
+        }
+        catch (Exception ex)
+        {
+            return new PagedResponse<IEnumerable<Department?>>(null,
+                        code: 500,
+                        message: $"Erro interno do servidor ao buscar departamentos.         Detalhes do erro: {ex.Message}.");
         }
     }
 
@@ -108,12 +118,22 @@ public class DepartmentService(ApplicationDbContext context) : IDepartmentServic
     {
         try
         {
-            throw new NotImplementedException();
-        }
-        catch (Exception)
-        {
+            var department = await context.Departments
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            throw;
+            if (department == null)
+                return new Response<Department?>(null, code: 404, message: "Departamento não encontrado.");
+
+            context.Departments.Remove(department);
+            await context.SaveChangesAsync();
+
+            return new Response<Department?>(department, code: 200, message: $"Departamento excluido com sucesso: {department.Name}");
+        }
+        catch (Exception ex)
+        {
+            return new Response<Department?>(null,
+                    code: 500,
+                    message: $"Erro interno do servidor. Detalhes do erro: {ex.Message}.");
         }
     }
 }

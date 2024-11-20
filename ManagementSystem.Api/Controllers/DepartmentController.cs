@@ -28,13 +28,8 @@ public class DepartmentController(
 
         if (response.IsSuccess)
         {
-            return CreatedAtAction(nameof(GetDepartmentById),
-                new
-                {
-                    department = response.Data,
-                    message = response.Message
-                },
-                new { departmentId = response.Data?.Id });
+            return CreatedAtAction(nameof(GetDepartmentById), new { departmentId = response.Data?.Id },
+                new { department = response.Data, message = response.Message });
         }
 
         return StatusCode(response.Code, new
@@ -90,13 +85,30 @@ public class DepartmentController(
     [HttpGet]
     public async Task<IActionResult> GetAllDepartments([FromQuery] PagedRequest pagedRequest)
     {
-        return Ok();
+        var response = await departmentService.GetAllDepartmentsAsync(pagedRequest);
+
+        if (response.Code == 200)
+            return Ok(response.Data);
+
+        if (response.Code == 404)
+            return NotFound(new { message = response.Message});
+
+        return StatusCode(500, new {message = response.Message });
     }
 
 
     [HttpDelete("{departmentId}")]
     public async Task<IActionResult> DeleteDepartment(int departmentId)
     {
-        return Ok();
+        var response = await departmentService.DeleteDepartmentAsync(departmentId);
+
+        if (response.Code == 200)
+            return Ok(new { message = response.Message });
+
+        if (response.Code == 404)
+            return NotFound(new { message = response.Message });
+
+
+        return StatusCode(response.Code, new { message = response.Message });
     }
 }
