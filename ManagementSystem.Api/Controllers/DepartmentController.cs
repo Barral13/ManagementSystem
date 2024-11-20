@@ -28,7 +28,8 @@ public class DepartmentController(
 
         if (response.IsSuccess)
         {
-            return CreatedAtAction(nameof(GetDepartmentById), new { departmentId = response.Data?.Id },
+            return CreatedAtAction(nameof(GetDepartmentById), 
+                new { departmentId = response.Data?.Id },
                 new { department = response.Data, message = response.Message });
         }
 
