@@ -4,6 +4,7 @@ using ManagementSystem.Core.Entities;
 using ManagementSystem.Core.Interfaces;
 using ManagementSystem.Core.Requests;
 using ManagementSystem.Core.Responses;
+using Microsoft.EntityFrameworkCore;
 
 namespace ManagementSystem.Api.Services;
 
@@ -13,12 +14,48 @@ public class PositionService(ApplicationDbContext context) : IPositionService
     {
         try
         {
-            throw new NotImplementedException();
-        }
-        catch (Exception)
-        {
+            var existingPosition = await context
+                .Positions
+                .FirstOrDefaultAsync(x => x.Name == createPosition.Name);
 
-            throw;
+            if (existingPosition != null)
+            {
+                return new Response<Position?>(
+                    null,
+                    code: 400,
+                    message: "Cargo já existente.");
+            }
+
+            var existingDepartment = await context.Departments.FirstOrDefaultAsync(x => x.Id == createPosition.DepartmentId);
+
+            if (existingDepartment == null)
+            {
+                return new Response<Position?>(
+                    null,
+                    code: 400,
+                    message: "Departamento não encontrado.");
+            }
+
+            var newPosition = new Position
+            {
+                Name = createPosition.Name,
+                DepartmentId = createPosition.DepartmentId
+            };
+
+            context.Positions.Add(newPosition);
+            await context.SaveChangesAsync();
+
+            return new Response<Position?>(
+                newPosition,
+                code: 201,
+                message: "Cargo criado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            return new Response<Position?>(
+                null, 
+                code: 500, 
+                message: $"Erro interno do servidor. Detalhes do erro: {ex.Message}.");
         }
     }
 
@@ -26,12 +63,31 @@ public class PositionService(ApplicationDbContext context) : IPositionService
     {
         try
         {
-            throw new NotImplementedException();
-        }
-        catch (Exception)
-        {
+            var position = await context.Positions.FirstOrDefaultAsync(x => x.Id == x.Id);
 
-            throw;
+            if(position == null)
+            {
+                return new Response<Position?>(
+                    null,
+                    code: 404,
+                    message: "Cargo não encontrado");
+            }
+
+            position.Name = updatePosition.Name;
+            context.Positions.Add(position);
+            await context.SaveChangesAsync();
+
+            return new Response<Position?>(
+                position,
+                code: 200,
+                message: "Cargo atualizado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            return new Response<Position?>(
+                null,
+                code: 500,
+                message: $"Erro interno do servidor. Detalhes do erro: {ex.Message}.");
         }
     }
 

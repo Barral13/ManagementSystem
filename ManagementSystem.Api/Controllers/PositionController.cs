@@ -13,7 +13,30 @@ public class PositionController(
     [HttpPost]
     public async Task<IActionResult> CreatePosition(CreatePositionDto createPosition)
     {
-        return Ok();
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new 
+            {
+                message = "Dados inválidos",
+                errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(x => x.ErrorMessage)
+            });
+        }
+
+        var response = await positionService.CreatePositionAsync(createPosition);
+
+        if (response.IsSuccess)
+        {
+            return CreatedAtAction(nameof(GetPositionById), 
+                new {positionId = response.Data?.Id},
+                new {position = response.Data, message = response.Message });
+        }
+
+        return StatusCode(response.Code, new
+        {
+            message = response.Message
+        });
     }
 
     [HttpPut("{positionId}")]
