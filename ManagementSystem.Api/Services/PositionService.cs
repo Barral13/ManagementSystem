@@ -63,12 +63,31 @@ public class PositionService(ApplicationDbContext context) : IPositionService
     {
         try
         {
-            throw new NotImplementedException();
-        }
-        catch (Exception)
-        {
+            var position = await context.Positions.FirstOrDefaultAsync(x => x.Id == x.Id);
 
-            throw;
+            if(position == null)
+            {
+                return new Response<Position?>(
+                    null,
+                    code: 404,
+                    message: "Cargo não encontrado");
+            }
+
+            position.Name = updatePosition.Name;
+            context.Positions.Add(position);
+            await context.SaveChangesAsync();
+
+            return new Response<Position?>(
+                position,
+                code: 200,
+                message: "Cargo atualizado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            return new Response<Position?>(
+                null,
+                code: 500,
+                message: $"Erro interno do servidor. Detalhes do erro: {ex.Message}.");
         }
     }
 

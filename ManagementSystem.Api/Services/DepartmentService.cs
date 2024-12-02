@@ -52,11 +52,11 @@ public class DepartmentService(ApplicationDbContext context) : IDepartmentServic
     {
         try
         {
-            var existingDepartment = await context
+            var department = await context
                 .Departments
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (existingDepartment == null)
+            if (department == null)
             {
                 return new Response<Department?>(
                     null, 
@@ -64,13 +64,13 @@ public class DepartmentService(ApplicationDbContext context) : IDepartmentServic
                     message: "Departamento não encontrado.");
             }
 
-            existingDepartment.Name = updateDepartment.Name;
+            department.Name = updateDepartment.Name;
 
-            context.Departments.Update(existingDepartment);
+            context.Departments.Update(department);
             await context.SaveChangesAsync();
 
             return new Response<Department?>(
-                existingDepartment,
+                department,
                 code: 200,
                 message: "Departamento atualizado com sucesso!");
         }
